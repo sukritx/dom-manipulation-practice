@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic ToDoList using DOM manipulation</title>
+</head>
+<body>
+    <input type="text" id="title" placeholder="Todo title"></input>
+    <br/>
+    <input type="text" id="description" placeholder="Todo description"></input>
+    <button onClick="addTodo()">Add Todo</button>
+
+    <div id="todos">
+
+    </div>
+
+    
+</body>
+
+<script>
+    let globalId = 1;
+    function markAsDone(todoId) {
+    let todo = document.getElementById(todoId);
+    todo.childNodes[2].innerHTML = "Done";
+
+    // Introduce a delay of 1000 milliseconds before removing the fourth child node
+    setTimeout(() => {
+        if (todo.childNodes[3]) {
+            todo.childNodes[3].remove();
+        }
+        // if childNodes[2] = "Done" then remove everything
+        if (todo.childNodes[2].innerHTML === "Done") {
+            todo.childNodes[1].remove();
+        }
+    }, 1000);
+}
+    function createChild(title, description, id){
+        let parent = document.createElement("div");
+        parent.setAttribute("id", id);
+        let titleElement = document.createElement("h3");
+        titleElement.innerHTML = title;
+        let descriptionElement = document.createElement("p");
+        descriptionElement.innerHTML = description;
+        let statusElement = document.createElement("p");
+        statusElement.innerHTML = "Pending";
+        let buttonElement = document.createElement("button");
+        buttonElement.innerHTML = "Mark as done";
+        buttonElement.setAttribute("onClick", "markAsDone("+id+")");
+        parent.appendChild(titleElement);
+        parent.appendChild(descriptionElement);
+        parent.appendChild(statusElement);
+        parent.appendChild(buttonElement);
+        return parent;
+    }
+    function addTodo(){
+        let title = document.getElementById("title").value;
+        let description = document.getElementById("description").value;
+        let parent = document.getElementById("todos");
+
+        parent.appendChild(createChild(title, description, globalId++));
+    }
+
+</script>
+
+</html>
